@@ -1,0 +1,17 @@
+---
+- name: Respaldo del Router
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+
+    - name: Backup Running Config
+      ios_command:
+        commands:
+          - show running-config
+      register: respaldo
+
+    - name: Guardar archivo
+      copy:
+        content: "{{ respaldo.stdout[0] }}"
+        dest: ./running-config-backup.txt
